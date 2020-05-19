@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Enemy : MonoBehaviour {
+public class Enemy : MonoBehaviour
+{
 
 	public float startSpeed = 10f;
 
@@ -12,6 +13,10 @@ public class Enemy : MonoBehaviour {
 	private float health;
 
 	public int worth = 50;
+
+	public static int CostSimpleEnemy = 50; //per simple enemy
+    public static int CostFastEnemy = 60; //per fast enemy
+    public static int CostToughEnemy = 70; //per tough enemy
 
 	public GameObject deathEffect;
 
