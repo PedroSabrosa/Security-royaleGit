@@ -5,13 +5,13 @@ public class PlayerStats : MonoBehaviour
 {
 
 	public static int Money;
-    public int startMoney = 400;
+    private int startMoney = 400;
 
     public static int AttackMoney;
-    public int startAttackMoney = 400;
+    private int startAttackMoney = 400;
 
     public static int Lives;
-	public int startLives = 20;
+    private int startLives = 20;
 
 	public static int Rounds;
 
