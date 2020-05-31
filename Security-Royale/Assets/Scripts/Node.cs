@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Node : MonoBehaviour {
+public class Node : MonoBehaviour
+{
 
 	public Color hoverColor;
 	public Color notEnoughMoneyColor;
