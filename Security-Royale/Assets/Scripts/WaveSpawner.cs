@@ -21,8 +21,10 @@ public class WaveSpawner : MonoBehaviour {
     [HideInInspector]
     public int toughEnemyCount = 0;
 
-    public bool bCanStartRound = false;
-    public bool bRoundStarted = false;
+    public bool bCanStartRound;
+    public bool bRoundStarted;
+    public bool bAttackTurnActive;
+    public bool bDefenseTurnActive;
 
     public Wave[] waves;
 
@@ -32,16 +34,31 @@ public class WaveSpawner : MonoBehaviour {
 	private float countdown = 2f;
 
 	public Text waveCountdownText;
+    public Text TurnText;
+
+    public GameObject attackPanel;
+    public GameObject defensePanel;
 
 	public GameManager gameManager;
 
 	private int waveIndex = 0;
 
+    void Awake()
+    {
+        bDefenseTurnActive = true;
+        bAttackTurnActive = false;
+
+        defensePanel.SetActive(true);
+        attackPanel.SetActive(false);
+    }
+
 	void Update ()
 	{
 
         EnemiesAlive = simpleEnemyCount + fastEnemyCount + toughEnemyCount; //sum of all enemies
-        Debug.Log(EnemiesAlive);                                                  //check current number of all enemies
+        Debug.Log(EnemiesAlive);                                            //check current number of all enemies
+
+        CheckTurnsText();
 
 
         if (EnemiesAlive > 0)
@@ -120,12 +137,45 @@ public class WaveSpawner : MonoBehaviour {
         }
     }
 
-    public void StartSpawnWave()
+    public void EndAttackTurn()
     {
+        bAttackTurnActive = false;
+
+        attackPanel.SetActive(false);
+
         if (bCanStartRound)
         {
             StartCoroutine(SpawnWave());
             bRoundStarted = true;
+        }
+    }
+
+    public void EndDefenseTurn()
+    {
+        bDefenseTurnActive = false;
+        bAttackTurnActive = true;
+
+        defensePanel.SetActive(false);
+        attackPanel.SetActive(true);
+    }
+
+    public void CheckTurnsText()
+    {
+
+        if (bDefenseTurnActive)
+        {
+            TurnText.text = "Defense Turn";
+        }
+
+        if (bAttackTurnActive)
+        {
+            bDefenseTurnActive = false;
+            TurnText.text = "Attack Turn";
+        }
+
+        if (bAttackTurnActive == false && bDefenseTurnActive == false)
+        {
+            TurnText.text = "In Battle";
         }
     }
 
