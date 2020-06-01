@@ -11,7 +11,7 @@ public class PlayerStats : MonoBehaviour
     private int startAttackMoney = 400;
 
     public static int Lives;
-    private int startLives = 20;
+    private int startLives = 3;
 
 	public static int Rounds;
 

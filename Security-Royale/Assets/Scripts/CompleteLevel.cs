@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CompleteLevel : MonoBehaviour {
+public class CompleteLevel : MonoBehaviour
+{
 
 	public string menuSceneName = "MainMenu";
 
@@ -11,13 +12,13 @@ public class CompleteLevel : MonoBehaviour {
 
 	public SceneFader sceneFader;
 
-	public void Continue ()
+	public void Continue()
 	{
 		PlayerPrefs.SetInt("levelReached", levelToUnlock);
 		sceneFader.FadeTo(nextLevel);
 	}
 
-	public void Menu ()
+	public void Menu()
 	{
 		sceneFader.FadeTo(menuSceneName);
 	}

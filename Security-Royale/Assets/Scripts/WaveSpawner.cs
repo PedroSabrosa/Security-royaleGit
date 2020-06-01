@@ -2,10 +2,11 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
-public class WaveSpawner : MonoBehaviour {
+public class WaveSpawner : MonoBehaviour
+{
 
 
-	public static int EnemiesAlive = 0;
+	public static int EnemiesAlive;
 
     [HideInInspector]
     public int simpleEnemiesAlive = 0; //simple enemies that are alive
@@ -38,6 +39,7 @@ public class WaveSpawner : MonoBehaviour {
 
     public GameObject attackPanel;
     public GameObject defensePanel;
+    public GameObject shopPanel;
 
 	public GameManager gameManager;
 
@@ -49,6 +51,7 @@ public class WaveSpawner : MonoBehaviour {
         bAttackTurnActive = false;
 
         defensePanel.SetActive(true);
+        shopPanel.SetActive(true);
         attackPanel.SetActive(false);
     }
 
@@ -56,7 +59,7 @@ public class WaveSpawner : MonoBehaviour {
 	{
 
         EnemiesAlive = simpleEnemyCount + fastEnemyCount + toughEnemyCount; //sum of all enemies
-        Debug.Log(EnemiesAlive);                                            //check current number of all enemies
+        Debug.Log("EnemiesAlive: " + EnemiesAlive);                                            //check current number of all enemies
 
         CheckTurnsText();
 
@@ -139,6 +142,7 @@ public class WaveSpawner : MonoBehaviour {
 
     public void EndAttackTurn()
     {
+        EnemiesAlive--;
         bAttackTurnActive = false;
 
         attackPanel.SetActive(false);
@@ -156,6 +160,7 @@ public class WaveSpawner : MonoBehaviour {
         bAttackTurnActive = true;
 
         defensePanel.SetActive(false);
+        shopPanel.SetActive(false);
         attackPanel.SetActive(true);
     }
 
