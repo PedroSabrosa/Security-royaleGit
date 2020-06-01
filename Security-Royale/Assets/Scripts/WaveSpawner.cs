@@ -40,6 +40,7 @@ public class WaveSpawner : MonoBehaviour
     public GameObject attackPanel;
     public GameObject defensePanel;
     public GameObject shopPanel;
+    public GameObject fogPanel;
 
 	public GameManager gameManager;
 
@@ -53,13 +54,14 @@ public class WaveSpawner : MonoBehaviour
         defensePanel.SetActive(true);
         shopPanel.SetActive(true);
         attackPanel.SetActive(false);
+        fogPanel.SetActive(false);
     }
 
 	void Update ()
 	{
 
         EnemiesAlive = simpleEnemyCount + fastEnemyCount + toughEnemyCount; //sum of all enemies
-        Debug.Log("EnemiesAlive: " + EnemiesAlive);                                            //check current number of all enemies
+        Debug.Log("EnemiesAlive: " + EnemiesAlive);                         //check current number of all enemies
 
         CheckTurnsText();
 
@@ -146,6 +148,7 @@ public class WaveSpawner : MonoBehaviour
         bAttackTurnActive = false;
 
         attackPanel.SetActive(false);
+        fogPanel.SetActive(false);
 
         if (bCanStartRound)
         {
@@ -162,6 +165,7 @@ public class WaveSpawner : MonoBehaviour
         defensePanel.SetActive(false);
         shopPanel.SetActive(false);
         attackPanel.SetActive(true);
+        fogPanel.SetActive(true);
     }
 
     public void CheckTurnsText()
