@@ -5,8 +5,7 @@ using UnityEngine.UI;
 public class WaveSpawner : MonoBehaviour
 {
 
-
-	public static int EnemiesAlive;
+    public static int EnemiesAlive;
 
     [HideInInspector]
     public int simpleEnemiesAlive = 0; //simple enemies that are alive
@@ -24,23 +23,21 @@ public class WaveSpawner : MonoBehaviour
 
     public bool bCanStartRound;
     public bool bRoundStarted;
-    public bool bAttackTurnActive;
     public bool bDefenseTurnActive;
+    public bool bAttackTurnActive;
+    public bool bTroopsSent;
 
     public Wave[] waves;
 
 	public Transform spawnPoint;
 
-	public float timeBetweenWaves = 5f;
-	private float countdown = 2f;
+    private float attackFirstTurnTimer = 20f;  // ADDING TIMERS
+    private float attackSecondTurnTimer = 60f; // ADDING TIMERS
+    private float defenseTurnTimer = 30f;      // ADDING TIMERS
+    private float passingTurnTimer = 5f;       // ADDING TIMERS
 
-    public float attackTurnTimer;  // ADDING TIMERS
-    public float defenseTurnTimer; // ADDING TIMERS
-    public float passingTurnTimer; // ADDING TIMERS
-
-    public Text waveCountdownText;
-    public Text TimerText;         // ADDING TIMERS
-    public Text TurnText;
+    public Text timerText;              // ADDING TIMERS
+    public Text turnText;          
 
     public GameObject attackPanel;
     public GameObject defensePanel;
@@ -55,6 +52,7 @@ public class WaveSpawner : MonoBehaviour
     {
         bDefenseTurnActive = true;
         bAttackTurnActive = false;
+        bTroopsSent = false;
 
         defensePanel.SetActive(true);
         shopPanel.SetActive(true);
@@ -71,7 +69,7 @@ public class WaveSpawner : MonoBehaviour
         EnemiesAlive = simpleEnemyCount + fastEnemyCount + toughEnemyCount; //sum of all enemies
         Debug.Log("EnemiesAlive: " + EnemiesAlive);                         //check current number of all enemies
 
-        CheckTurnsText();
+        CheckTurns();
 
         if (EnemiesAlive > 0)
 		{
@@ -83,17 +81,6 @@ public class WaveSpawner : MonoBehaviour
 			gameManager.WinLevel();
 			this.enabled = false;
 		}
-
-		//if (countdown <= 0f)
-		//{
-  //          bCanStartRound = true;
-		//	countdown = timeBetweenWaves;
-		//	return;
-		//}
-
-  //      countdown -= Time.deltaTime;
-  //      countdown = Mathf.Clamp(countdown, 0f, Mathf.Infinity);
-  //      waveCountdownText.text = string.Format("{0:00.00}", countdown);
 	}
 
     //-------------------------------------------------------------------------------
@@ -165,16 +152,11 @@ public class WaveSpawner : MonoBehaviour
 
         attackPanel.SetActive(true);
         //fogPanel.SetActive(true);
-
-        //if (bCanStartRound)
-        //{
-        //    StartCoroutine(SpawnWave());
-        //    bRoundStarted = true;
-        //}
     }
 
     public void SendTroops()
     {
+        bTroopsSent = true;
         StartCoroutine(SpawnWave());
     }
 
@@ -186,23 +168,35 @@ public class WaveSpawner : MonoBehaviour
         fogPanel.SetActive(false);
     }
 
-    public void CheckTurnsText()
+    public void CheckTurns()
     {
 
         if (bDefenseTurnActive)
         {
-            TurnText.text = "Defense Turn";
+            turnText.text = "Defense Turn";
+
+            defenseTurnTimer -= Time.deltaTime;
+            defenseTurnTimer = Mathf.Clamp(defenseTurnTimer, 0f, Mathf.Infinity);
+            timerText.text = string.Format("{00:00}", defenseTurnTimer);
         }
 
         if (bAttackTurnActive)
         {
             bDefenseTurnActive = false;
-            TurnText.text = "Attack Turn";
+            turnText.text = "Attack Turn";
+
+            attackFirstTurnTimer -= Time.deltaTime;
+            attackFirstTurnTimer = Mathf.Clamp(attackFirstTurnTimer, 0f, Mathf.Infinity);
+            timerText.text = string.Format("{00:00}", attackFirstTurnTimer);
         }
 
-        if (bAttackTurnActive == false && bDefenseTurnActive == false)
+        if (bTroopsSent)
         {
-            TurnText.text = "In Battle";
+            turnText.text = "Battle Turn";
+
+            attackSecondTurnTimer -= Time.deltaTime;
+            attackSecondTurnTimer = Mathf.Clamp(attackSecondTurnTimer, 0f, Mathf.Infinity);
+            timerText.text = string.Format("{00:00}", attackSecondTurnTimer);
         }
     }
 
@@ -212,8 +206,6 @@ public class WaveSpawner : MonoBehaviour
 
     IEnumerator SpawnWave ()
 	{
-        //PlayerStats.Rounds++;
-
         Wave wave = waves[waveIndex];
 
         wave.simpleEnemyCount = simpleEnemyCount;
