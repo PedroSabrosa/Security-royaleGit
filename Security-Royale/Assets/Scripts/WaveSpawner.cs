@@ -200,7 +200,7 @@ public class WaveSpawner : MonoBehaviour
             defensePanel.SetActive(false);
             shopPanel.SetActive(false);
             attackPanel.SetActive(false);
-            fogPanel.SetActive(true);
+            //fogPanel.SetActive(true);
 
             if (passingTurnTimer <= 0)
             {
