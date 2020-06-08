@@ -31,10 +31,10 @@ public class WaveSpawner : MonoBehaviour
 
 	public Transform spawnPoint;
 
-    private float attackFirstTurnTimer = 20f;  // ADDING TIMERS
-    private float attackSecondTurnTimer = 60f; // ADDING TIMERS
-    private float defenseTurnTimer = 30f;      // ADDING TIMERS
-    private float passingTurnTimer = 5f;       // ADDING TIMERS
+    private float attackTurnTimer = 60f;  // ADDING TIMERS
+    private float endOfRoundTimer = 60f;  // ADDING TIMERS
+    private float defenseTurnTimer = 30f; // ADDING TIMERS
+    private float passingTurnTimer = 5f;  // ADDING TIMERS
 
     public Text timerText;              // ADDING TIMERS
     public Text turnText;          
@@ -178,6 +178,26 @@ public class WaveSpawner : MonoBehaviour
             defenseTurnTimer -= Time.deltaTime;
             defenseTurnTimer = Mathf.Clamp(defenseTurnTimer, 0f, Mathf.Infinity);
             timerText.text = string.Format("{00:00}", defenseTurnTimer);
+
+            if (defenseTurnTimer <= 0)
+            {
+                passingTurnTimer -= Time.deltaTime;
+                passingTurnTimer = Mathf.Clamp(passingTurnTimer, 0f, Mathf.Infinity);
+                timerText.text = string.Format("{00:00}", passingTurnTimer);
+
+                bDefenseTurnActive = false;
+                bAttackTurnActive = false;
+
+                defensePanel.SetActive(false);
+                shopPanel.SetActive(false);
+                attackPanel.SetActive(false);
+                fogPanel.SetActive(true);
+
+                if (passingTurnTimer <= 0)
+                {
+                    EndDefenseTurn();
+                }
+            }
         }
 
         if (bAttackTurnActive)
@@ -185,19 +205,29 @@ public class WaveSpawner : MonoBehaviour
             bDefenseTurnActive = false;
             turnText.text = "Attack Turn";
 
-            attackFirstTurnTimer -= Time.deltaTime;
-            attackFirstTurnTimer = Mathf.Clamp(attackFirstTurnTimer, 0f, Mathf.Infinity);
-            timerText.text = string.Format("{00:00}", attackFirstTurnTimer);
+            attackTurnTimer -= Time.deltaTime;
+            attackTurnTimer = Mathf.Clamp(attackTurnTimer, 0f, Mathf.Infinity);
+            timerText.text = string.Format("{00:00}", attackTurnTimer);
+
+            if (attackTurnTimer <= 0)
+            {
+                EndAttackTurn();
+            }
         }
 
-        if (bTroopsSent)
-        {
-            turnText.text = "Battle Turn";
+        //if (bTroopsSent)
+        //{
+        //    turnText.text = "Battle Turn";
 
-            attackSecondTurnTimer -= Time.deltaTime;
-            attackSecondTurnTimer = Mathf.Clamp(attackSecondTurnTimer, 0f, Mathf.Infinity);
-            timerText.text = string.Format("{00:00}", attackSecondTurnTimer);
-        }
+        //    endOfRoundTimer -= Time.deltaTime;
+        //    endOfRoundTimer = Mathf.Clamp(endOfRoundTimer, 0f, Mathf.Infinity);
+        //    timerText.text = string.Format("{00:00}", endOfRoundTimer);
+
+        //    if (endOfRoundTimer <= 0)
+        //    {
+        //        EndAttackTurn();
+        //    }
+        //}
     }
 
     //-------------------------------------------------------------------------------
