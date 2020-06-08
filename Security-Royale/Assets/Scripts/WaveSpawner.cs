@@ -26,17 +26,19 @@ public class WaveSpawner : MonoBehaviour
     public bool bDefenseTurnActive;
     public bool bAttackTurnActive;
     public bool bTroopsSent;
+    public bool bPassingTurn;
+    public bool bEndOfRound;
 
     public Wave[] waves;
 
 	public Transform spawnPoint;
 
     private float attackTurnTimer = 60f;  // ADDING TIMERS
-    private float endOfRoundTimer = 60f;  // ADDING TIMERS
     private float defenseTurnTimer = 30f; // ADDING TIMERS
     private float passingTurnTimer = 5f;  // ADDING TIMERS
+    private float endOfRoundTimer = 10f;  // ADDING TIMERS
 
-    public Text timerText;              // ADDING TIMERS
+    public Text timerText;                // ADDING TIMERS
     public Text turnText;          
 
     public GameObject attackPanel;
@@ -53,6 +55,8 @@ public class WaveSpawner : MonoBehaviour
         bDefenseTurnActive = true;
         bAttackTurnActive = false;
         bTroopsSent = false;
+        bPassingTurn = false;
+        bEndOfRound = false;
 
         defensePanel.SetActive(true);
         shopPanel.SetActive(true);
@@ -71,16 +75,16 @@ public class WaveSpawner : MonoBehaviour
 
         CheckTurns();
 
-        if (EnemiesAlive > 0)
-		{
-			return;
-		}
+  //      if (EnemiesAlive > 0)
+		//{
+		//	return;
+		//}
 
-		if (waveIndex == waves.Length)
-		{
-			gameManager.WinLevel();
-			this.enabled = false;
-		}
+		//if (waveIndex == waves.Length)
+		//{
+		//	gameManager.WinLevel();
+		//	this.enabled = false;
+		//}
 	}
 
     //-------------------------------------------------------------------------------
@@ -143,7 +147,7 @@ public class WaveSpawner : MonoBehaviour
         defensePanel.SetActive(false);
         shopPanel.SetActive(false);
 
-        StartAttackTurn();
+        bPassingTurn = true;
     }
 
     public void StartAttackTurn()
@@ -162,10 +166,7 @@ public class WaveSpawner : MonoBehaviour
 
     public void EndAttackTurn()
     {
-        bAttackTurnActive = false;
-
-        attackPanel.SetActive(false);
-        fogPanel.SetActive(false);
+        bEndOfRound = true;
     }
 
     public void CheckTurns()
@@ -181,22 +182,30 @@ public class WaveSpawner : MonoBehaviour
 
             if (defenseTurnTimer <= 0)
             {
-                passingTurnTimer -= Time.deltaTime;
-                passingTurnTimer = Mathf.Clamp(passingTurnTimer, 0f, Mathf.Infinity);
-                timerText.text = string.Format("{00:00}", passingTurnTimer);
+                bPassingTurn = true;
+            }
+        }
 
-                bDefenseTurnActive = false;
-                bAttackTurnActive = false;
+        if (bPassingTurn)
+        {
+            turnText.text = "Passing Turns";
 
-                defensePanel.SetActive(false);
-                shopPanel.SetActive(false);
-                attackPanel.SetActive(false);
-                fogPanel.SetActive(true);
+            passingTurnTimer -= Time.deltaTime;
+            passingTurnTimer = Mathf.Clamp(passingTurnTimer, 0f, Mathf.Infinity);
+            timerText.text = string.Format("{00:00}", passingTurnTimer);
 
-                if (passingTurnTimer <= 0)
-                {
-                    EndDefenseTurn();
-                }
+            bDefenseTurnActive = false;
+            bAttackTurnActive = false;
+
+            defensePanel.SetActive(false);
+            shopPanel.SetActive(false);
+            attackPanel.SetActive(false);
+            fogPanel.SetActive(true);
+
+            if (passingTurnTimer <= 0)
+            {
+                StartAttackTurn();
+                bPassingTurn = false;
             }
         }
 
@@ -215,19 +224,28 @@ public class WaveSpawner : MonoBehaviour
             }
         }
 
-        //if (bTroopsSent)
-        //{
-        //    turnText.text = "Battle Turn";
+        if (bEndOfRound)
+        {
+            turnText.text = "Final Seconds";
 
-        //    endOfRoundTimer -= Time.deltaTime;
-        //    endOfRoundTimer = Mathf.Clamp(endOfRoundTimer, 0f, Mathf.Infinity);
-        //    timerText.text = string.Format("{00:00}", endOfRoundTimer);
+            endOfRoundTimer -= Time.deltaTime;
+            endOfRoundTimer = Mathf.Clamp(endOfRoundTimer, 0f, Mathf.Infinity);
+            timerText.text = string.Format("{00:00}", endOfRoundTimer);
 
-        //    if (endOfRoundTimer <= 0)
-        //    {
-        //        EndAttackTurn();
-        //    }
-        //}
+            bDefenseTurnActive = false;
+            bAttackTurnActive = false;
+
+            defensePanel.SetActive(false);
+            shopPanel.SetActive(false);
+            attackPanel.SetActive(false);
+            fogPanel.SetActive(false);
+
+            if (endOfRoundTimer <= 0)
+            {
+                turnText.text = "Round Ended";
+                bEndOfRound = false;
+            }
+        }
     }
 
     //-------------------------------------------------------------------------------
