@@ -3,8 +3,18 @@ using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
-
+	public GameObject bulletPrefab;
 	public float startSpeed = 10f;
+
+	public string enemyTag = "Turret";
+
+	public float range = 30f;
+
+	public float fireRate = 1f;
+	private float fireCountdown = 0f;
+
+	private Transform target;
+	private Turret targetTurret;
 
 	[HideInInspector]
 	public float speed;
@@ -29,6 +39,57 @@ public class Enemy : MonoBehaviour
 	{
 		speed = startSpeed;
 		health = startHealth;
+		InvokeRepeating("UpdateTarget", 0f, 0.5f);
+	}
+
+	void Update()
+	{
+		if (fireCountdown <= 0f)
+		{
+			Shoot();
+			fireCountdown = 1f / fireRate;
+		}
+
+		fireCountdown -= Time.deltaTime;
+	}
+
+	void UpdateTarget()
+	{
+		GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
+		float shortestDistance = Mathf.Infinity;
+		GameObject nearestEnemy = null;
+		foreach (GameObject enemy in enemies)
+		{
+			float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
+			Debug.Log(distanceToEnemy);
+			if (distanceToEnemy < shortestDistance)
+			{
+				shortestDistance = distanceToEnemy;
+				nearestEnemy = enemy;
+			}
+		}
+
+		if (nearestEnemy != null && shortestDistance <= range)
+		{
+			target = nearestEnemy.transform;
+			targetTurret = nearestEnemy.GetComponent<Turret>();
+		}
+		else
+		{
+			target = null;
+		}
+
+	}
+
+	void Shoot()
+	{
+		GameObject bulletGO = (GameObject)Instantiate(bulletPrefab, transform.position, transform.rotation);
+		Bullet bullet = bulletGO.GetComponent<Bullet>();
+
+		if (bullet != null)
+		{
+			bullet.Seek(target);
+		}
 	}
 
 	public void TakeDamage (float amount)

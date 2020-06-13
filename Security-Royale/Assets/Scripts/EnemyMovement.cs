@@ -7,10 +7,14 @@ public class EnemyMovement : MonoBehaviour {
 	private Transform target;
 	private int wavepointIndex = 0;
 
+	public bool move;
+
 	private Enemy enemy;
 
 	void Start()
 	{
+		move = true;
+
 		enemy = GetComponent<Enemy>();
 
 		target = Waypoints.points[0];
@@ -18,15 +22,18 @@ public class EnemyMovement : MonoBehaviour {
 
 	void Update()
 	{
-		Vector3 dir = target.position - transform.position;
-		transform.Translate(dir.normalized * enemy.speed * Time.deltaTime, Space.World);
-
-		if (Vector3.Distance(transform.position, target.position) <= 0.4f)
+		if (move)
 		{
-			GetNextWaypoint();
-		}
+			Vector3 dir = target.position - transform.position;
+			transform.Translate(dir.normalized * enemy.speed * Time.deltaTime, Space.World);
 
-		enemy.speed = enemy.startSpeed;
+			if (Vector3.Distance(transform.position, target.position) <= 0.4f)
+			{
+				GetNextWaypoint();
+			}
+
+			enemy.speed = enemy.startSpeed;
+		}
 	}
 
 	void GetNextWaypoint()
@@ -46,6 +53,22 @@ public class EnemyMovement : MonoBehaviour {
 		PlayerStats.Lives--;
 		WaveSpawner.EnemiesAlive--;
 		Destroy(gameObject);
+	}
+
+	private void OnTriggerEnter(Collider other)
+	{
+		if (other.tag == "Turret")
+		{
+			move = false;
+		}
+	}
+
+	private void OnTriggerExit(Collider other)
+	{
+		if (other.tag == "Turret")
+		{
+			move = true;
+		}
 	}
 
 }

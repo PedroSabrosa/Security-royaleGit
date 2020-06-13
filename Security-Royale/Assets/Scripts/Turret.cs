@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class Turret : MonoBehaviour {
@@ -9,6 +10,13 @@ public class Turret : MonoBehaviour {
 	[Header("General")]
 
 	public float range = 15f;
+
+	public Image healthBar;
+
+	public float startHealth = 100;
+	public float health;
+
+	private bool isDead = false;
 
 	[Header("Use Bullets (default)")]
 	public GameObject bulletPrefab;
@@ -35,7 +43,9 @@ public class Turret : MonoBehaviour {
 	public Transform firePoint;
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+	{
+		health = 100;
 		InvokeRepeating("UpdateTarget", 0f, 0.5f);
 	}
 	
@@ -143,5 +153,35 @@ public class Turret : MonoBehaviour {
 	{
 		Gizmos.color = Color.red;
 		Gizmos.DrawWireSphere(transform.position, range);
+	}
+
+	public void TakeDamage(float amount)
+	{
+		health -= amount;
+
+		healthBar.fillAmount = health / startHealth;
+
+		if (health <= 0 && !isDead)
+		{
+			Die();
+		}
+	}
+
+	void Die()
+	{
+		isDead = true;
+
+		transform.position = new Vector3(250, 250, 250);
+
+		//GameObject effect = (GameObject)Instantiate(deathEffect, transform.position, Quaternion.identity);
+		//Destroy(effect, 5f);
+
+		StartCoroutine(Destroy());
+	}
+
+	IEnumerator Destroy()
+	{
+		yield return new WaitForSeconds(1);
+		Destroy(gameObject);
 	}
 }
