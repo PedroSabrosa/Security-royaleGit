@@ -13,7 +13,7 @@ public class Turret : MonoBehaviour {
 
 	public Image healthBar;
 
-	public float startHealth = 100;
+	public float startHealth = 500;
 	public float health;
 
 	private bool isDead = false;
@@ -45,7 +45,7 @@ public class Turret : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
 	{
-		health = 100;
+		health = startHealth;
 		InvokeRepeating("UpdateTarget", 0f, 0.5f);
 	}
 	

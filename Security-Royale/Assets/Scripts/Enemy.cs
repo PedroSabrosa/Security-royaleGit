@@ -10,7 +10,7 @@ public class Enemy : MonoBehaviour
 
 	public float range = 30f;
 
-	public float fireRate = 1f;
+	public float fireRate = 0.5f;
 	private float fireCountdown = 0f;
 
 	private Transform target;

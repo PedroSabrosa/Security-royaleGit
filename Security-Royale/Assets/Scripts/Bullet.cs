@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public class Bullet : MonoBehaviour {
+public class Bullet : MonoBehaviour
+{
 
 	private Transform target;
 
@@ -10,14 +11,15 @@ public class Bullet : MonoBehaviour {
 
 	public float explosionRadius = 0f;
 	public GameObject impactEffect;
-	
-	public void Seek (Transform _target)
+
+	public void Seek(Transform _target)
 	{
 		target = _target;
 	}
 
 	// Update is called once per frame
-	void Update () {
+	void Update()
+	{
 
 		if (target == null)
 		{
@@ -39,7 +41,7 @@ public class Bullet : MonoBehaviour {
 
 	}
 
-	void HitTarget ()
+	void HitTarget()
 	{
 		GameObject effectIns = (GameObject)Instantiate(impactEffect, transform.position, transform.rotation);
 		Destroy(effectIns, 5f);
@@ -47,7 +49,8 @@ public class Bullet : MonoBehaviour {
 		if (explosionRadius > 0f)
 		{
 			Explode();
-		} else
+		}
+		else
 		{
 			Damage(target);
 		}
@@ -55,29 +58,41 @@ public class Bullet : MonoBehaviour {
 		Destroy(gameObject);
 	}
 
-	void Explode ()
+	void Explode()
 	{
 		Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius);
 		foreach (Collider collider in colliders)
 		{
-			if (collider.tag == "Enemy")
+			if (collider.tag == "Enemy" || collider.tag == "Turret")
 			{
 				Damage(collider.transform);
 			}
 		}
 	}
 
-	void Damage (Transform enemy)
+	void Damage(Transform entity)
 	{
-		Enemy e = enemy.GetComponent<Enemy>();
-
-		if (e != null)
+		if (entity.tag == "Enemy")
 		{
-			e.TakeDamage(damage);
+			Enemy e = entity.GetComponent<Enemy>();
+
+			if (e != null)
+			{
+				e.TakeDamage(damage);
+			}
+		}
+		else if (entity.tag == "Turret")
+		{
+			Turret t = entity.GetComponent<Turret>();
+
+			if (t != null)
+			{
+				t.TakeDamage(damage);
+			}
 		}
 	}
 
-	void OnDrawGizmosSelected ()
+	void OnDrawGizmosSelected()
 	{
 		Gizmos.color = Color.red;
 		Gizmos.DrawWireSphere(transform.position, explosionRadius);
