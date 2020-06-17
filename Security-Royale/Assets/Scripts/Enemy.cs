@@ -16,6 +16,8 @@ public class Enemy : MonoBehaviour
 	private Transform target;
 	private Turret targetTurret;
 
+	public int damage;
+
 	[HideInInspector]
 	public float speed;
 
@@ -85,6 +87,7 @@ public class Enemy : MonoBehaviour
 	{
 		GameObject bulletGO = (GameObject)Instantiate(bulletPrefab, transform.position, transform.rotation);
 		Bullet bullet = bulletGO.GetComponent<Bullet>();
+		bullet.damage = damage;
 
 		if (bullet != null)
 		{
