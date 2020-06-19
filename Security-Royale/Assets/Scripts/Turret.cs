@@ -28,6 +28,7 @@ public class Turret : MonoBehaviour {
 
 	public int damageOverTime = 30;
 	public float slowAmount = .5f;
+	public int damage;
 
 	public LineRenderer lineRenderer;
 	public ParticleSystem impactEffect;
@@ -144,6 +145,7 @@ public class Turret : MonoBehaviour {
 	{
 		GameObject bulletGO = (GameObject)Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
 		Bullet bullet = bulletGO.GetComponent<Bullet>();
+		bullet.damage = damage;
 
 		if (bullet != null)
 			bullet.Seek(target);

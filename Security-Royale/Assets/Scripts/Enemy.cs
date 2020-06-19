@@ -40,7 +40,7 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
-        WaveSpawnerObject = GameObject.FindGameObjectWithTag("GameMaster");
+		WaveSpawnerObject = GameObject.FindGameObjectWithTag("GameMaster");
         speed = startSpeed;
         health = startHealth;
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
@@ -59,23 +59,26 @@ public class Enemy : MonoBehaviour
     }
 
     void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "Plane1")
+    {	
+		if (gameObject.GetComponent<CustomTag>().HasTag("FastEnemy"))
         {
-            other.gameObject.SetActive(false);
-        }
-        if (other.tag == "Plane2")
-        {
-            other.gameObject.SetActive(false);
-        }
-        if (other.tag == "Plane3")
-        {
-            other.gameObject.SetActive(false);
-        }
-        if (other.tag == "Plane4")
-        {
-            other.gameObject.SetActive(false);
-        }
+			if (other.tag == "Plane1")
+			{
+				other.gameObject.SetActive(false);
+			}
+			else if (other.tag == "Plane2")
+			{
+				other.gameObject.SetActive(false);
+			}
+			else if (other.tag == "Plane3")
+			{
+				other.gameObject.SetActive(false);
+			}
+			else if (other.tag == "Plane4")
+			{
+				other.gameObject.SetActive(false);
+			}
+		}
     }
 
 	void UpdateTarget()

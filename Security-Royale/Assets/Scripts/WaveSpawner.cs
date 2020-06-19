@@ -61,7 +61,7 @@ public class WaveSpawner : MonoBehaviour
         defensePanel.SetActive(true);
         shopPanel.SetActive(true);
         attackPanel.SetActive(false);
-        fogPanel.SetActive(false);
+        //fogPanel.SetActive(false);
 
         bCanStartRound = true;
         bRoundStarted = false;
@@ -155,7 +155,7 @@ public class WaveSpawner : MonoBehaviour
         bAttackTurnActive = true;
 
         attackPanel.SetActive(true);
-        fogPanel.SetActive(true);
+        //fogPanel.SetActive(true);
     }
 
     public void SendTroops()
@@ -200,7 +200,7 @@ public class WaveSpawner : MonoBehaviour
             defensePanel.SetActive(false);
             shopPanel.SetActive(false);
             attackPanel.SetActive(false);
-            fogPanel.SetActive(true);
+            //fogPanel.SetActive(true);
 
             if (passingTurnTimer <= 0)
             {
@@ -238,7 +238,7 @@ public class WaveSpawner : MonoBehaviour
             defensePanel.SetActive(false);
             shopPanel.SetActive(false);
             attackPanel.SetActive(false);
-            fogPanel.SetActive(false);
+            //fogPanel.SetActive(false);
 
             if (endOfRoundTimer <= 0)
             {

@@ -42,9 +42,14 @@ public class EnemyMovement : MonoBehaviour
 			//{
 			//	GetNextWaypoint();
 			//}
-
+			if (agent.isStopped)
+				agent.isStopped = false;
 			enemy.speed = enemy.startSpeed;
 		}
+		else
+        {
+			agent.isStopped = true;
+        }
 
         //-----------------------------------------------------------------------
         if (!agent.pathPending)
