@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public class BuildManager : MonoBehaviour {
+public class BuildManager : MonoBehaviour
+{
 
 	public static BuildManager instance;
 
@@ -16,6 +17,8 @@ public class BuildManager : MonoBehaviour {
 
 	public GameObject buildEffect;
 	public GameObject sellEffect;
+
+	public GameObject costTowerPrefab;
 
 	private TurretBlueprint turretToBuild;
 	private Node selectedNode;
