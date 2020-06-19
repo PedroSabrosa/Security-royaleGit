@@ -36,24 +36,47 @@ public class Enemy : MonoBehaviour
 	public Image healthBar;
 
 	private bool isDead = false;
+    public GameObject WaveSpawnerObject;
 
-	void Start ()
-	{
-		speed = startSpeed;
-		health = startHealth;
-		InvokeRepeating("UpdateTarget", 0f, 0.5f);
-	}
+    void Start()
+    {
+        WaveSpawnerObject = GameObject.FindGameObjectWithTag("GameMaster");
+        speed = startSpeed;
+        health = startHealth;
+        InvokeRepeating("UpdateTarget", 0f, 0.5f);
+    }
 
-	void Update()
-	{
-		if (fireCountdown <= 0f)
-		{
-			Shoot();
-			fireCountdown = 1f / fireRate;
-		}
+    void Update()
+    {
+        WaveSpawnerObject = GameObject.FindGameObjectWithTag("GameMaster");
+        if (fireCountdown <= 0f)
+        {
+            Shoot();
+            fireCountdown = 1f / fireRate;
+        }
 
-		fireCountdown -= Time.deltaTime;
-	}
+        fireCountdown -= Time.deltaTime;
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Plane1")
+        {
+            other.gameObject.SetActive(false);
+        }
+        if (other.tag == "Plane2")
+        {
+            other.gameObject.SetActive(false);
+        }
+        if (other.tag == "Plane3")
+        {
+            other.gameObject.SetActive(false);
+        }
+        if (other.tag == "Plane4")
+        {
+            other.gameObject.SetActive(false);
+        }
+    }
 
 	void UpdateTarget()
 	{
