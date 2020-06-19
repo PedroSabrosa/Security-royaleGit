@@ -20,12 +20,24 @@ public class Node : MonoBehaviour
 
 	BuildManager buildManager;
 
-	void Start ()
+    //---------------------------------------------
+    public Vector3 addXValue;
+    public Vector3 subtractXValue;
+    public Vector3 addZValue;
+    public Vector3 subtractZValue;
+
+    void Start ()
 	{
 		rend = GetComponent<Renderer>();
 		startColor = rend.material.color;
 
 		buildManager = BuildManager.instance;
+
+        //----------------------------------------
+        addXValue      = new Vector3(5f, 1f, 0f);
+        subtractXValue = new Vector3(-5f, 1f, 0f);
+        addZValue      = new Vector3(0f, 1f, 5f);
+        subtractZValue = new Vector3(0f, 1f, -5f);
     }
 
 	public Vector3 GetBuildPosition ()
@@ -33,7 +45,29 @@ public class Node : MonoBehaviour
 		return transform.position + positionOffset;
 	}
 
-	void OnMouseDown ()
+    //------------------------------------------------
+    public Vector3 GetCostTowerBuildPosition1()
+    {
+        return transform.position + positionOffset + addXValue;
+    }
+
+    public Vector3 GetCostTowerBuildPosition2()
+    {
+        return transform.position + positionOffset + subtractXValue;
+    }
+
+    public Vector3 GetCostTowerBuildPosition3()
+    {
+        return transform.position + positionOffset + addZValue;
+    }
+
+    public Vector3 GetCostTowerBuildPosition4()
+    {
+        return transform.position + positionOffset + subtractZValue;
+    }
+    //------------------------------------------------
+
+    void OnMouseDown ()
 	{
 		if (EventSystem.current.IsPointerOverGameObject())
 			return;
@@ -48,7 +82,9 @@ public class Node : MonoBehaviour
 			return;
 
 		BuildTurret(buildManager.GetTurretToBuild());
-	}
+        //-------------------------------------------
+        BuildCostTower();
+    }
 
 	void BuildTurret (TurretBlueprint blueprint)
 	{
@@ -71,7 +107,19 @@ public class Node : MonoBehaviour
 		Debug.Log("Turret build!");
 	}
 
-	public void UpgradeTurret ()
+    //-------------------------------------------------------------------------------------
+    void BuildCostTower()
+    {
+        Instantiate(buildManager.costTowerPrefab, GetCostTowerBuildPosition1(), Quaternion.identity);
+        Instantiate(buildManager.costTowerPrefab, GetCostTowerBuildPosition2(), Quaternion.identity);
+        Instantiate(buildManager.costTowerPrefab, GetCostTowerBuildPosition3(), Quaternion.identity);
+        Instantiate(buildManager.costTowerPrefab, GetCostTowerBuildPosition4(), Quaternion.identity);
+
+        Debug.Log("Cost Tower build!");
+    }
+    //-------------------------------------------------------------------------------------
+
+    public void UpgradeTurret ()
 	{
 		if (PlayerStats.Money < turretBlueprint.upgradeCost)
 		{
