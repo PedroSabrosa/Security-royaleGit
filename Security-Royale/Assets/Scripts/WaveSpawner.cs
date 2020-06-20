@@ -74,7 +74,6 @@ public class WaveSpawner : MonoBehaviour
         Debug.Log("EnemiesAlive: " + EnemiesAlive);                         //check current number of all enemies
 
         CheckTurns();
-
   //      if (EnemiesAlive > 0)
 		//{
 		//	return;
@@ -167,6 +166,7 @@ public class WaveSpawner : MonoBehaviour
     public void EndAttackTurn()
     {
         bEndOfRound = true;
+        gameManager.WinLevel();
     }
 
     public void CheckTurns()
