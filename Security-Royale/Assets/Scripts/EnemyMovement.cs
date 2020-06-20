@@ -4,21 +4,19 @@ using System.Collections;
 
 [RequireComponent(typeof(Enemy))]
 public class EnemyMovement : MonoBehaviour
-{
-
-	private Transform target;
-	private int wavepointIndex = 0;
-
+{ 
 	public bool move;
+
+	private bool isFastEnemy;
 
 	private Enemy enemy;
 
-    //-----------------------
     private GameObject goal;
     private NavMeshAgent agent;
 
     void Start()
 	{
+		isFastEnemy = GetComponent<CustomTag>().HasTag("FastEnemy");
 		move = true;
 
 		enemy = GetComponent<Enemy>();
@@ -33,23 +31,31 @@ public class EnemyMovement : MonoBehaviour
 
 	void Update()
 	{
-		if (move)
-		{
-			//Vector3 dir = target.position - transform.position;
-			//transform.Translate(dir.normalized * enemy.speed * Time.deltaTime, Space.World);
+		if(!isFastEnemy)
+        {
+			if (move)
+			{
+				//Vector3 dir = target.position - transform.position;
+				//transform.Translate(dir.normalized * enemy.speed * Time.deltaTime, Space.World);
 
-			//if (Vector3.Distance(transform.position, target.position) <= 0.4f)
-			//{
-			//	GetNextWaypoint();
-			//}
-			if (agent.isStopped)
-				agent.isStopped = false;
-			enemy.speed = enemy.startSpeed;
+				//if (Vector3.Distance(transform.position, target.position) <= 0.4f)
+				//{
+				//	GetNextWaypoint();
+				//}
+				if (agent.isStopped)
+					agent.isStopped = false;
+				enemy.speed = enemy.startSpeed;
+			}
+			else
+			{
+				agent.isStopped = true;
+			}
 		}
 		else
         {
-			agent.isStopped = true;
-        }
+			enemy.speed = enemy.startSpeed;
+		}
+		
 
         //-----------------------------------------------------------------------
         if (!agent.pathPending)

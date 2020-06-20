@@ -25,4 +25,9 @@ public class PlayerStats : MonoBehaviour
         Rounds = 0;
 	}
 
+    public void AddAttackMoney(int amount)
+    {
+        AttackMoney += amount;
+    }
+
 }

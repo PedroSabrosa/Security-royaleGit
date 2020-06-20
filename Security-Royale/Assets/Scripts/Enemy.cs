@@ -5,6 +5,9 @@ public class Enemy : MonoBehaviour
 {
 	public GameObject bulletPrefab;
 	public float startSpeed = 10f;
+	private GameObject gameManager;
+
+	private bool isFastEnemy;
 
 	public string enemyTag = "Turret";
 
@@ -29,6 +32,7 @@ public class Enemy : MonoBehaviour
 	public static int CostSimpleEnemy = 50; //per simple enemy
     public static int CostFastEnemy = 60; //per fast enemy
     public static int CostToughEnemy = 70; //per tough enemy
+	public static int CostReturnOnSniffingSuccess = 30;
 
 	public GameObject deathEffect;
 
@@ -36,26 +40,28 @@ public class Enemy : MonoBehaviour
 	public Image healthBar;
 
 	private bool isDead = false;
-    public GameObject WaveSpawnerObject;
 
     void Start()
     {
-		WaveSpawnerObject = GameObject.FindGameObjectWithTag("GameMaster");
-        speed = startSpeed;
+		gameManager = GameObject.FindGameObjectWithTag("GameMaster");
+		isFastEnemy = GetComponent<CustomTag>().HasTag("FastEnemy");
+		speed = startSpeed;
         health = startHealth;
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
     }
 
     void Update()
     {
-        WaveSpawnerObject = GameObject.FindGameObjectWithTag("GameMaster");
-        if (fireCountdown <= 0f)
+		if(!isFastEnemy)
         {
-            Shoot();
-            fireCountdown = 1f / fireRate;
-        }
+			if (fireCountdown <= 0f)
+			{
+				Shoot();
+				fireCountdown = 1f / fireRate;
+			}
 
-        fireCountdown -= Time.deltaTime;
+			fireCountdown -= Time.deltaTime;
+		}
     }
 
     void OnTriggerEnter(Collider other)
@@ -64,22 +70,33 @@ public class Enemy : MonoBehaviour
         {
 			if (other.tag == "Plane1")
 			{
-				other.gameObject.SetActive(false);
+				DestroyFog(other.gameObject);
 			}
 			else if (other.tag == "Plane2")
 			{
-				other.gameObject.SetActive(false);
+				DestroyFog(other.gameObject);
 			}
 			else if (other.tag == "Plane3")
 			{
-				other.gameObject.SetActive(false);
+				DestroyFog(other.gameObject);
 			}
 			else if (other.tag == "Plane4")
 			{
-				other.gameObject.SetActive(false);
+				DestroyFog(other.gameObject);
 			}
 		}
     }
+
+	void DestroyFog(GameObject other)
+    {
+		if (gameManager != null)
+			gameManager.GetComponent<PlayerStats>().AddAttackMoney(CostReturnOnSniffingSuccess);
+
+		other.gameObject.SetActive(false);
+		Destroy(gameObject);
+		GameObject effect = (GameObject)Instantiate(deathEffect, transform.position, Quaternion.identity);
+		Destroy(effect, 5f);
+	}
 
 	void UpdateTarget()
 	{
