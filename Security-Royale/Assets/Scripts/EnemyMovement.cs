@@ -23,9 +23,6 @@ public class EnemyMovement : MonoBehaviour
 
 		enemy = GetComponent<Enemy>();
 
-		//target = Waypoints.points[0];
-
-        //-----------------------------
         goal = GameObject.FindGameObjectWithTag("End");
         agent = GetComponent<NavMeshAgent>();
         agent.destination = goal.transform.position;
@@ -37,13 +34,6 @@ public class EnemyMovement : MonoBehaviour
         {
 			if (move)
 			{
-				//Vector3 dir = target.position - transform.position;
-				//transform.Translate(dir.normalized * enemy.speed * Time.deltaTime, Space.World);
-
-				//if (Vector3.Distance(transform.position, target.position) <= 0.4f)
-				//{
-				//	GetNextWaypoint();
-				//}
 				if (agent.isStopped)
 					agent.isStopped = false;
 				enemy.speed = enemy.startSpeed;
@@ -57,9 +47,7 @@ public class EnemyMovement : MonoBehaviour
         {
 			enemy.speed = enemy.startSpeed;
 		}
-		
 
-        //-----------------------------------------------------------------------
         if (!agent.pathPending)
         {
             if (agent.remainingDistance <= agent.stoppingDistance)
@@ -72,18 +60,6 @@ public class EnemyMovement : MonoBehaviour
             }
         }
     }
-
-	//void GetNextWaypoint()
-	//{
-	//	if (wavepointIndex >= Waypoints.points.Length - 1)
-	//	{
-	//		EndPath();
-	//		return;
-	//	}
-
-	//	wavepointIndex++;
-	//	target = Waypoints.points[wavepointIndex];
-	//}
 
 	void EndPath()
 	{

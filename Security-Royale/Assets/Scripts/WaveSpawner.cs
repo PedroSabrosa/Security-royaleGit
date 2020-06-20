@@ -37,12 +37,12 @@ public class WaveSpawner : MonoBehaviour
 
 	public Transform spawnPoint;
 
-    private float attackTurnTimer = 60f;  // ADDING TIMERS
-    private float defenseTurnTimer = 30f; // ADDING TIMERS
-    private float passingTurnTimer = 5f;  // ADDING TIMERS
-    private float endOfRoundTimer = 10f;  // ADDING TIMERS
+    private float attackTurnTimer = 60f; 
+    private float defenseTurnTimer = 30f; 
+    private float passingTurnTimer = 5f; 
+    private float endOfRoundTimer = 10f;  
 
-    public Text timerText;                // ADDING TIMERS
+    public Text timerText;               
     public Text turnText;          
 
     public GameObject attackPanel;
@@ -77,28 +77,14 @@ public class WaveSpawner : MonoBehaviour
         EnemiesAlive = simpleEnemyCount + fastEnemyCount + toughEnemyCount + destructionEnemyCount; //sum of all enemies
 
         CheckTurns();
-  //      if (EnemiesAlive > 0)
-		//{
-		//	return;
-		//}
-
-		//if (waveIndex == waves.Length)
-		//{
-		//	gameManager.WinLevel();
-		//	this.enabled = false;
-		//}
 	}
-
-    //-------------------------------------------------------------------------------
-    //-------------------------------------------------------------------------------
-    //-------------------------------------------------------------------------------
 
     public void AddSimpleEnemy()
     {
         if (PlayerStats.AttackMoney >= Enemy.CostSimpleEnemy)
         {
             PlayerStats.AttackMoney -= Enemy.CostSimpleEnemy;
-            simpleEnemyCount++; //something similar
+            simpleEnemyCount++; 
         }
 
         if (PlayerStats.AttackMoney < 0)
@@ -113,7 +99,7 @@ public class WaveSpawner : MonoBehaviour
         if (PlayerStats.AttackMoney >= Enemy.CostFastEnemy)
         {
             PlayerStats.AttackMoney -= Enemy.CostFastEnemy;
-            fastEnemyCount++; //something similar
+            fastEnemyCount++;
         }
 
         if (PlayerStats.AttackMoney < 0)
@@ -128,7 +114,7 @@ public class WaveSpawner : MonoBehaviour
         if (PlayerStats.AttackMoney >= Enemy.CostToughEnemy)
         {
             PlayerStats.AttackMoney -= Enemy.CostToughEnemy;
-            toughEnemyCount++; //something similar
+            toughEnemyCount++; 
         }
 
         if (PlayerStats.AttackMoney < 0)
@@ -143,7 +129,7 @@ public class WaveSpawner : MonoBehaviour
         if (PlayerStats.AttackMoney >= Enemy.CostDestructionEnemy)
         {
             PlayerStats.AttackMoney -= Enemy.CostDestructionEnemy;
-            destructionEnemyCount++; //something similar
+            destructionEnemyCount++; 
         }
 
         if (PlayerStats.AttackMoney < 0)
@@ -152,10 +138,6 @@ public class WaveSpawner : MonoBehaviour
             destructionEnemyCount--;
         }
     }
-
-    //-------------------------------------------------------------------------------
-    //-------------------------------------------------------------------------------
-    //-------------------------------------------------------------------------------
 
     public void EndDefenseTurn()
     {
@@ -265,10 +247,6 @@ public class WaveSpawner : MonoBehaviour
             }
         }
     }
-
-    //-------------------------------------------------------------------------------
-    //-------------------------------------------------------------------------------
-    //-------------------------------------------------------------------------------
 
     IEnumerator SpawnWave ()
 	{

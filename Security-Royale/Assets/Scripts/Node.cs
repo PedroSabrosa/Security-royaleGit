@@ -20,8 +20,7 @@ public class Node : MonoBehaviour
 
 	BuildManager buildManager;
 
-    //---------------------------------------------
-    public Vector3 addXValue, subtractXValue, addZValue, subtractZValue;
+    private Vector3 addXValue, subtractXValue, addZValue, subtractZValue;
 
     void Start ()
 	{
@@ -30,7 +29,6 @@ public class Node : MonoBehaviour
 
 		buildManager = BuildManager.instance;
 
-        //----------------------------------------
         addXValue      = new Vector3(5f, 1f, 0f);
         subtractXValue = new Vector3(-5f, 1f, 0f);
         addZValue      = new Vector3(0f, 1f, 5f);
@@ -42,7 +40,6 @@ public class Node : MonoBehaviour
 		return transform.position + positionOffset;
 	}
 
-    //------------------------------------------------
     public Vector3 GetCostTowerBuildPosition1()
     {
         return transform.position + positionOffset + addXValue;
@@ -62,7 +59,6 @@ public class Node : MonoBehaviour
     {
         return transform.position + positionOffset + subtractZValue;
     }
-    //------------------------------------------------
 
     void OnMouseDown ()
 	{
@@ -102,16 +98,13 @@ public class Node : MonoBehaviour
 		BuildCostTower();
 	}
 
-    //-------------------------------------------------------------------------------------
     void BuildCostTower()
     {
         Instantiate(buildManager.costTowerPrefab, GetCostTowerBuildPosition1(), Quaternion.identity);
         Instantiate(buildManager.costTowerPrefab, GetCostTowerBuildPosition2(), Quaternion.identity);
         Instantiate(buildManager.costTowerPrefab, GetCostTowerBuildPosition3(), Quaternion.identity);
         Instantiate(buildManager.costTowerPrefab, GetCostTowerBuildPosition4(), Quaternion.identity);
-
 	}
-    //-------------------------------------------------------------------------------------
 
     public void UpgradeTurret ()
 	{

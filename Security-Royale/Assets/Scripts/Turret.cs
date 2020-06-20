@@ -2,7 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
-public class Turret : MonoBehaviour {
+public class Turret : MonoBehaviour
+{
 
 	private Transform target;
 	private Enemy targetEnemy;
@@ -174,9 +175,6 @@ public class Turret : MonoBehaviour {
 		isDead = true;
 
 		transform.position = new Vector3(250, 250, 250);
-
-		//GameObject effect = (GameObject)Instantiate(deathEffect, transform.position, Quaternion.identity);
-		//Destroy(effect, 5f);
 
 		StartCoroutine(Destroy());
 	}

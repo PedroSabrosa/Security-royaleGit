@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class NodeUI : MonoBehaviour {
+public class NodeUI : MonoBehaviour
+{
 
 	public GameObject ui;
 

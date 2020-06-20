@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public class Shop : MonoBehaviour {
+public class Shop : MonoBehaviour
+{
 
 	public TurretBlueprint standardTurret;
 	public TurretBlueprint missileLauncher;

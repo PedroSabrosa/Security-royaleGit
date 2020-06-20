@@ -3,7 +3,8 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class SceneFader : MonoBehaviour {
+public class SceneFader : MonoBehaviour
+{
 
 	public Image img;
 	public AnimationCurve curve;
