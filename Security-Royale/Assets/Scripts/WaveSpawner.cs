@@ -13,6 +13,8 @@ public class WaveSpawner : MonoBehaviour
     public int fastEnemiesAlive = 0;   //fast enemies that are alive
     [HideInInspector]
     public int toughEnemiesAlive = 0;  //tough enemies that are alive
+    [HideInInspector]
+    public int destructionEnemiesAlive = 0;  //tough enemies that are alive
 
     [HideInInspector]
     public int simpleEnemyCount = 0;
@@ -20,6 +22,8 @@ public class WaveSpawner : MonoBehaviour
     public int fastEnemyCount = 0;
     [HideInInspector]
     public int toughEnemyCount = 0;
+    [HideInInspector]
+    public int destructionEnemyCount = 0;
 
     public bool bCanStartRound;
     public bool bRoundStarted;
@@ -70,8 +74,7 @@ public class WaveSpawner : MonoBehaviour
 	void Update ()
 	{
 
-        EnemiesAlive = simpleEnemyCount + fastEnemyCount + toughEnemyCount; //sum of all enemies
-        Debug.Log("EnemiesAlive: " + EnemiesAlive);                         //check current number of all enemies
+        EnemiesAlive = simpleEnemyCount + fastEnemyCount + toughEnemyCount + destructionEnemyCount; //sum of all enemies
 
         CheckTurns();
   //      if (EnemiesAlive > 0)
@@ -132,6 +135,21 @@ public class WaveSpawner : MonoBehaviour
         {
             PlayerStats.AttackMoney = 0;
             toughEnemyCount--;
+        }
+    }
+
+    public void AddDestructionEnemy()
+    {
+        if (PlayerStats.AttackMoney >= Enemy.CostDestructionEnemy)
+        {
+            PlayerStats.AttackMoney -= Enemy.CostDestructionEnemy;
+            destructionEnemyCount++; //something similar
+        }
+
+        if (PlayerStats.AttackMoney < 0)
+        {
+            PlayerStats.AttackMoney = 0;
+            destructionEnemyCount--;
         }
     }
 
@@ -259,8 +277,9 @@ public class WaveSpawner : MonoBehaviour
         wave.simpleEnemyCount = simpleEnemyCount;
         wave.fastEnemyCount = fastEnemyCount;
         wave.toughEnemyCount = toughEnemyCount;
+        wave.destructionEnemyCount = destructionEnemyCount;
 
-        EnemiesAlive = wave.simpleEnemyCount + wave.fastEnemyCount + wave.toughEnemyCount;
+        EnemiesAlive = wave.simpleEnemyCount + wave.fastEnemyCount + wave.toughEnemyCount + wave.destructionEnemyCount;
 
         for (int i = 0; i < wave.simpleEnemyCount; i++)
         {
@@ -280,6 +299,12 @@ public class WaveSpawner : MonoBehaviour
             yield return new WaitForSeconds(1f / wave.rate);
         }
 
+        for (int i = 0; i < wave.destructionEnemyCount; i++)
+        {
+            SpawnEnemy(wave.destructionEnemy);
+            yield return new WaitForSeconds(1f / wave.rate);
+        }
+
         ResetWave();
 	}
 
@@ -288,6 +313,7 @@ public class WaveSpawner : MonoBehaviour
         simpleEnemyCount = 0;
         fastEnemyCount = 0;
         toughEnemyCount = 0;
+        destructionEnemyCount = 0;
     }
 
 	void SpawnEnemy (GameObject enemy)

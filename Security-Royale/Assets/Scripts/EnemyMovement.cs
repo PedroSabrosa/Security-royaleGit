@@ -8,6 +8,7 @@ public class EnemyMovement : MonoBehaviour
 	public bool move;
 
 	private bool isFastEnemy;
+	private bool isDestructionEnemy;
 
 	private Enemy enemy;
 
@@ -17,6 +18,7 @@ public class EnemyMovement : MonoBehaviour
     void Start()
 	{
 		isFastEnemy = GetComponent<CustomTag>().HasTag("FastEnemy");
+		isDestructionEnemy = GetComponent<CustomTag>().HasTag("DataDestruction");
 		move = true;
 
 		enemy = GetComponent<Enemy>();
@@ -31,7 +33,7 @@ public class EnemyMovement : MonoBehaviour
 
 	void Update()
 	{
-		if(!isFastEnemy)
+		if(!isFastEnemy && !isDestructionEnemy)
         {
 			if (move)
 			{
@@ -85,9 +87,12 @@ public class EnemyMovement : MonoBehaviour
 
 	void EndPath()
 	{
-		PlayerStats.Lives--;
 		WaveSpawner.EnemiesAlive--;
 		Destroy(gameObject);
+		if (GetComponent<CustomTag>().HasTag("DataDestruction"))
+        {
+			PlayerStats.Lives--;
+		}
 	}
 
 	private void OnTriggerEnter(Collider other)

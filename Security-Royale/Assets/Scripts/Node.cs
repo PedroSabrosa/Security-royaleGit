@@ -21,10 +21,7 @@ public class Node : MonoBehaviour
 	BuildManager buildManager;
 
     //---------------------------------------------
-    public Vector3 addXValue;
-    public Vector3 subtractXValue;
-    public Vector3 addZValue;
-    public Vector3 subtractZValue;
+    public Vector3 addXValue, subtractXValue, addZValue, subtractZValue;
 
     void Start ()
 	{
@@ -82,8 +79,6 @@ public class Node : MonoBehaviour
 			return;
 
 		BuildTurret(buildManager.GetTurretToBuild());
-        //-------------------------------------------
-        BuildCostTower();
     }
 
 	void BuildTurret (TurretBlueprint blueprint)
@@ -104,7 +99,7 @@ public class Node : MonoBehaviour
 		GameObject effect = (GameObject)Instantiate(buildManager.buildEffect, GetBuildPosition(), Quaternion.identity);
 		Destroy(effect, 5f);
 
-		Debug.Log("Turret build!");
+		BuildCostTower();
 	}
 
     //-------------------------------------------------------------------------------------
@@ -115,15 +110,13 @@ public class Node : MonoBehaviour
         Instantiate(buildManager.costTowerPrefab, GetCostTowerBuildPosition3(), Quaternion.identity);
         Instantiate(buildManager.costTowerPrefab, GetCostTowerBuildPosition4(), Quaternion.identity);
 
-        Debug.Log("Cost Tower build!");
-    }
+	}
     //-------------------------------------------------------------------------------------
 
     public void UpgradeTurret ()
 	{
 		if (PlayerStats.Money < turretBlueprint.upgradeCost)
 		{
-			Debug.Log("Not enough money to upgrade that!");
 			return;
 		}
 

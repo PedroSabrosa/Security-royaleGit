@@ -8,6 +8,10 @@ public class Enemy : MonoBehaviour
 	private GameObject gameManager;
 
 	private bool isFastEnemy;
+	private bool isDestructionEnemy;
+
+	public bool preferredMissile;
+	public bool preferredLaser;
 
 	public string enemyTag = "Turret";
 
@@ -32,6 +36,7 @@ public class Enemy : MonoBehaviour
 	public static int CostSimpleEnemy = 50; //per simple enemy
     public static int CostFastEnemy = 60; //per fast enemy
     public static int CostToughEnemy = 70; //per tough enemy
+	public static int CostDestructionEnemy = 70; //per tough enemy
 	public static int CostReturnOnSniffingSuccess = 30;
 
 	public GameObject deathEffect;
@@ -45,6 +50,7 @@ public class Enemy : MonoBehaviour
     {
 		gameManager = GameObject.FindGameObjectWithTag("GameMaster");
 		isFastEnemy = GetComponent<CustomTag>().HasTag("FastEnemy");
+		isDestructionEnemy = GetComponent<CustomTag>().HasTag("DataDestruction");
 		speed = startSpeed;
         health = startHealth;
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
@@ -52,7 +58,7 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-		if(!isFastEnemy)
+		if(!isFastEnemy && !isDestructionEnemy)
         {
 			if (fireCountdown <= 0f)
 			{
@@ -106,7 +112,6 @@ public class Enemy : MonoBehaviour
 		foreach (GameObject enemy in enemies)
 		{
 			float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
-			Debug.Log(distanceToEnemy);
 			if (distanceToEnemy < shortestDistance)
 			{
 				shortestDistance = distanceToEnemy;
@@ -130,7 +135,25 @@ public class Enemy : MonoBehaviour
 	{
 		GameObject bulletGO = (GameObject)Instantiate(bulletPrefab, transform.position, transform.rotation);
 		Bullet bullet = bulletGO.GetComponent<Bullet>();
-		bullet.damage = damage;
+
+		if(target != null)
+        {
+			if(preferredMissile && target.GetComponent<CustomTag>().HasTag("Missile"))
+			{
+				bullet.damage = (int) (damage * 1.5);
+				Debug.Log("Bonus Damage");
+			}
+			else if(preferredLaser && target.GetComponent<CustomTag>().HasTag("Laser"))
+			{
+				bullet.damage = (int)(damage * 1.5);
+			}
+			else
+			{
+				bullet.damage = damage;
+				Debug.Log("Normal Damage");
+			}
+        }
+		
 
 		if (bullet != null)
 		{
