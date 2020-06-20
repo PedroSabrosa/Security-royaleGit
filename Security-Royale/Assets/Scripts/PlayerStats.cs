@@ -8,7 +8,7 @@ public class PlayerStats : MonoBehaviour
     private int startMoney = 400;
 
     public static int AttackMoney;
-    private int startAttackMoney = 400;
+    private int startAttackMoney = 330;
 
     public static int Lives;
     private int startLives = 3;

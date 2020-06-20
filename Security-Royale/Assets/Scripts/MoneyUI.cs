@@ -14,6 +14,6 @@ public class MoneyUI : MonoBehaviour
     {
         defenseMoneyText.text = "Defense Money:$" + PlayerStats.Money.ToString();
 
-        attackMoneyText.text = "Attack Money: $" + PlayerStats.AttackMoney.ToString();
+        attackMoneyText.text = "Attack Energy:" + PlayerStats.AttackMoney.ToString();
     }
 }
