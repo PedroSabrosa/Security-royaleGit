@@ -152,6 +152,8 @@ public class Enemy : MonoBehaviour
 				bullet.damage = damage;
 				Debug.Log("Normal Damage");
 			}
+
+			return;
         }
 		
 
